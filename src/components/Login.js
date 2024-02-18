@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "./Header";
-
+import { checkValidation } from "../utils/Validate";
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+  const [isError, setIsError] = useState(null);
   const toggleSignIn = () => {
     setIsSignIn(!isSignIn);
   };
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleButtonClick = () => {
+    const message = checkValidation(
+      emailRef.current.value,
+      passwordRef.current.value
+    );
+    setIsError(message);
+  };
+
   return (
     <div>
       <Header />
@@ -15,30 +27,42 @@ const Login = () => {
           alt="login-background"
         />
       </div>
-      <form className="absolute w-3/12 mx-auto my-36 right-0 left-0 bg-black p-10 bg-opacity-80 text-white">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="absolute w-3/12 mx-auto my-36 right-0 left-0 bg-black p-10 bg-opacity-80 text-white"
+      >
         <h1 className="text-white text-3xl font-bold">
           {isSignIn ? "Sign In" : "Sign Up"}
         </h1>
         <input
+          ref={emailRef}
           type="text"
-          placeholder="Name"
+          placeholder="Email"
           className="p-4 w-full my-4 bg-gray-700"
         />
         {!isSignIn ? (
           <input
+            required
             type="text"
-            placeholder="Email"
+            placeholder="Name"
             className="p-4 w-full my-4 bg-gray-700"
           />
         ) : (
           ""
         )}
         <input
+          ref={passwordRef}
           type="text"
           placeholder="Password"
           className="p-4 w-full my-4 bg-gray-700"
         />
-        <button className="bg-red-800 w-full p-4 my-4 ">Submit</button>
+        <p className="text-red-900 font-bold">{isError}</p>
+        <button
+          className="bg-red-800 w-full p-4 my-4"
+          onClick={handleButtonClick}
+        >
+          Submit
+        </button>
         <p onClick={toggleSignIn} className="p-4 my-4 w-full cursor-pointer">
           {isSignIn ? "New to Netflix Sign Up " : "Already a User? Sign In"} Now
         </p>
