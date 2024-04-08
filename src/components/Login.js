@@ -1,6 +1,12 @@
 import React, { useState, useRef } from "react";
 import Header from "./Header";
 import { checkValidation } from "../utils/Validate";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [isError, setIsError] = useState(null);
@@ -10,12 +16,45 @@ const Login = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  //! Sign and Signup button
   const handleButtonClick = () => {
     const message = checkValidation(
       emailRef.current.value,
       passwordRef.current.value
     );
     setIsError(message);
+    if (message) return;
+    if (!isSignIn) {
+      createUserWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setIsError(errorCode + " " + errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("user signIn: ", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setIsError(errorCode + " " + errorMessage);
+        });
+    }
   };
 
   return (
