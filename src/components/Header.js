@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 const Header = () => {
   let navigate = useNavigate();
   let userInformationFromStore = useSelector((store) => store?.user);
+
+  //* Function that logs out of the Application
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -16,6 +18,7 @@ const Header = () => {
         navigate("/error");
       });
   };
+
   return (
     <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-50 flex justify-between w-screen">
       <img

@@ -22,14 +22,18 @@ const Login = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  //! Sign and Signup button
+  //* Sign and Signup button
+
   const handleButtonClick = () => {
+    //! Validating input fields
     const message = checkValidation(
       emailRef.current.value,
       passwordRef.current.value
     );
     setIsError(message);
     if (message) return;
+
+    //! For SignUp
     if (!isSignIn) {
       createUserWithEmailAndPassword(
         auth,
@@ -39,6 +43,7 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("user: ", user);
+          //! Adding the below function because the "displayName" was not getting registered on the first load when "onAuthStateChanged" is called from Body.js
           updateProfile(auth.currentUser, {
             displayName: nameRef.current.value,
             photoURL: "https://example.com/jane-q-user/profile.jpg",
@@ -61,7 +66,9 @@ const Login = () => {
           setIsError(errorCode + " " + errorMessage);
           navigate("/");
         });
-    } else {
+    }
+    // ! For SignIn
+    else {
       signInWithEmailAndPassword(
         auth,
         emailRef.current.value,
