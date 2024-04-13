@@ -5,14 +5,20 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../src/utils/userSlice";
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSignIn, setIsSignIn] = useState(true);
   const [isError, setIsError] = useState(null);
   const toggleSignIn = () => {
     setIsSignIn(!isSignIn);
   };
+  const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -32,12 +38,28 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
+          console.log("user: ", user);
+          updateProfile(auth.currentUser, {
+            displayName: nameRef.current.value,
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName })
+              );
+            })
+            .catch((error) => {
+              console.log("error: ", error);
+              navigate("/error");
+            });
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setIsError(errorCode + " " + errorMessage);
+          navigate("/");
         });
     } else {
       signInWithEmailAndPassword(
@@ -48,11 +70,13 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("user signIn: ", user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setIsError(errorCode + " " + errorMessage);
+          navigate("/");
         });
     }
   };
@@ -81,7 +105,7 @@ const Login = () => {
         />
         {!isSignIn ? (
           <input
-            required
+            ref={nameRef}
             type="text"
             placeholder="Name"
             className="p-4 w-full my-4 bg-gray-700"
