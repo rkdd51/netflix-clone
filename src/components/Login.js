@@ -7,11 +7,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../src/utils/userSlice";
 const Login = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSignIn, setIsSignIn] = useState(true);
   const [isError, setIsError] = useState(null);
@@ -41,8 +39,6 @@ const Login = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
-          const user = userCredential.user;
-          console.log("user: ", user);
           //! Adding the below function because the "displayName" was not getting registered on the first load when "onAuthStateChanged" is called from Body.js
           updateProfile(auth.currentUser, {
             displayName: nameRef.current.value,
@@ -56,15 +52,13 @@ const Login = () => {
             })
             .catch((error) => {
               console.log("error: ", error);
-              navigate("/error");
             });
-          navigate("/browse");
+          
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setIsError(errorCode + " " + errorMessage);
-          navigate("/");
         });
     }
     // ! For SignIn
@@ -74,16 +68,12 @@ const Login = () => {
         emailRef.current.value,
         passwordRef.current.value
       )
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log("user signIn: ", user);
-          navigate("/browse");
+        .then((userCredential) => {          
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setIsError(errorCode + " " + errorMessage);
-          navigate("/");
         });
     }
   };

@@ -15,6 +15,7 @@
 - Created Redux Store with userSlice
 - Implemented SignOut
 - Updated Profile
+- Bug Fixed : If user not loggedIn then redirect back to Login
 
 Features planning
 
