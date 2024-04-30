@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
-import { addUser, removeUser } from "../../src/utils/userSlice";
+import { addUser, removeUser } from "../utils/reduxSlice/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LOGO } from "../../src/utils/constants";

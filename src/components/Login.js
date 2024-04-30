@@ -8,7 +8,9 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { addUser } from "../../src/utils/userSlice";
+import { addUser } from "../../src/utils/reduxSlice/userSlice";
+
+
 const Login = () => {
   const dispatch = useDispatch();
   const [isSignIn, setIsSignIn] = useState(true);
