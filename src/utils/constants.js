@@ -9,4 +9,6 @@ export const API_OPTIONS = {
       Authorization:
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YjE5YWM1NWMzN2VhYzVlYmM5YzQwODExN2VlOWUxMSIsInN1YiI6IjYwYmRiNjllOWE2NGMxMDAyOTk1MmNjNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Pd1PQzEusMaXDz27FbzwKDzAJaD5ZZsHDxzeDn2k2t4",
     },
-  };
+};
+  
+export const IMG_CONSTANTS = "https://image.tmdb.org/t/p/original"

@@ -7,7 +7,7 @@ const MainContainer = () => {
     //*Movies initial value is null, that why we need to add this condition sot that if the data is not present than the code does not throw an error
     if (!movies) return;
     const mainMovie = movies?.results?.[0];
-    console.log('mainMovie: ', mainMovie);
+    // console.log('mainMovie: ', mainMovie);
 
   return (
     <div>
@@ -15,7 +15,7 @@ const MainContainer = () => {
         title={mainMovie?.original_title}
         description={mainMovie?.overview}
       />
-      <VideoBackground movieId={mainMovie?.id} />
+      <VideoBackground movieId={mainMovie?.id}/>
     </div>
   );
 }
